@@ -18,7 +18,11 @@
 
 ## 安装
 
-需要 Windows 10/11 和 Stream Deck 软件 6.5 以上。不需要额外安装运行库或第三方工具，用 Windows 自带的 .NET Framework C# 编译器编译。
+需要 Windows 10/11 和 Stream Deck 软件 6.5 以上。
+
+**直接安装：** 在 [Releases](https://github.com/NiseMonox/streamdeck-audio-switch/releases/latest) 下载 `com.nisemonox.audioswitch.streamDeckPlugin`，双击即可装进 Stream Deck。
+
+**从源码编译：** 不需要额外安装运行库或第三方工具，用 Windows 自带的 .NET Framework C# 编译器编译。
 
 ```powershell
 git clone https://github.com/NiseMonox/streamdeck-audio-switch.git
@@ -26,7 +30,9 @@ cd streamdeck-audio-switch
 powershell -ExecutionPolicy Bypass -File .\build.ps1 -Install
 ```
 
-`-Install` 会编译、把插件复制到 `%APPDATA%\Elgato\StreamDeck\Plugins`，然后重启 Stream Deck。之后在 Stream Deck 软件右侧的“音频切换”分类里把动作拖到按键上，在下方的下拉框里选设备即可。
+`-Install` 会编译、把插件复制到 `%APPDATA%\Elgato\StreamDeck\Plugins`，然后重启 Stream Deck；`-Package` 则在 `dist\` 生成可以双击安装的 `.streamDeckPlugin`（Releases 里的文件就是这样生成的）。
+
+装好后，在 Stream Deck 软件右侧的“音频切换”分类里把动作拖到按键上，在下方的下拉框里选设备即可。
 
 ## 命令行
 
@@ -50,7 +56,7 @@ AudioSwitch.exe panel                    打开“声音”设置
 
 ## English
 
-A Windows-only Stream Deck plugin that switches the default playback device with one key press (for example a headphones key and a speakers key, where the key of the device in use lights up), plus a key that opens the classic Sound control panel. It is built with the C# compiler that ships with Windows, so there are no runtimes or third-party dependencies to install. Run `build.ps1 -Install`, then drag the actions from the "音频切换" category onto keys and pick a device. The UI text is in Chinese.
+A Windows-only Stream Deck plugin that switches the default playback device with one key press (for example a headphones key and a speakers key, where the key of the device in use lights up), plus a key that opens the classic Sound control panel. It is built with the C# compiler that ships with Windows, so there are no runtimes or third-party dependencies to install. Download the `.streamDeckPlugin` from [Releases](https://github.com/NiseMonox/streamdeck-audio-switch/releases/latest) and double-click it (or build from source with `build.ps1 -Install`), then drag the actions from the "音频切换" category onto keys and pick a device. The UI text is in Chinese.
 
 ## 许可证
 
