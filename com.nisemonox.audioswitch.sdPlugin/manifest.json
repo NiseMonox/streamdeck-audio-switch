@@ -1,0 +1,71 @@
+{
+  "$schema": "https://schemas.elgato.com/streamdeck/plugins/manifest.json",
+  "UUID": "com.nisemonox.audioswitch",
+  "Name": "音频切换",
+  "Version": "1.0.0.0",
+  "Author": "NiseMonox",
+  "URL": "https://github.com/NiseMonox/streamdeck-audio-switch",
+  "Description": "切换 Windows 默认播放设备（耳机键、音箱键，或单键来回切换），也可以打开“声音”设置。",
+  "Icon": "imgs/plugin",
+  "Category": "音频切换",
+  "CategoryIcon": "imgs/category",
+  "CodePathWin": "AudioSwitch.exe",
+  "SDKVersion": 2,
+  "Software": { "MinimumVersion": "6.5" },
+  "OS": [{ "Platform": "windows", "MinimumVersion": "10" }],
+  "Actions": [
+    {
+      "UUID": "com.nisemonox.audioswitch.headphones",
+      "Name": "切换到耳机",
+      "Tooltip": "按下切换到这个设备，正在使用时按键亮起；长按打开“声音”设置",
+      "Icon": "imgs/action-headphones",
+      "PropertyInspectorPath": "pi/inspector.html",
+      "DisableAutomaticStates": true,
+      "SupportedInMultiActions": true,
+      "Controllers": ["Keypad"],
+      "States": [
+        { "Image": "imgs/key-headphones-off", "Title": "耳机", "TitleAlignment": "bottom", "TitleColor": "#8A8A8A" },
+        { "Image": "imgs/key-headphones", "Title": "耳机", "TitleAlignment": "bottom", "TitleColor": "#FFFFFF" }
+      ]
+    },
+    {
+      "UUID": "com.nisemonox.audioswitch.speakers",
+      "Name": "切换到音箱",
+      "Tooltip": "按下切换到这个设备，正在使用时按键亮起；长按打开“声音”设置",
+      "Icon": "imgs/action-speakers",
+      "PropertyInspectorPath": "pi/inspector.html",
+      "DisableAutomaticStates": true,
+      "SupportedInMultiActions": true,
+      "Controllers": ["Keypad"],
+      "States": [
+        { "Image": "imgs/key-speakers-off", "Title": "音箱", "TitleAlignment": "bottom", "TitleColor": "#8A8A8A" },
+        { "Image": "imgs/key-speakers", "Title": "音箱", "TitleAlignment": "bottom", "TitleColor": "#FFFFFF" }
+      ]
+    },
+    {
+      "UUID": "com.nisemonox.audioswitch.toggle",
+      "Name": "单键来回切换",
+      "Tooltip": "短按在两个播放设备之间切换，图标显示当前设备；长按打开“声音”设置",
+      "Icon": "imgs/action-toggle",
+      "PropertyInspectorPath": "pi/inspector.html",
+      "DisableAutomaticStates": true,
+      "SupportedInMultiActions": true,
+      "Controllers": ["Keypad"],
+      "States": [
+        { "Image": "imgs/key-headphones", "Title": "耳机", "TitleAlignment": "bottom" },
+        { "Image": "imgs/key-speakers", "Title": "音箱", "TitleAlignment": "bottom" }
+      ]
+    },
+    {
+      "UUID": "com.nisemonox.audioswitch.panel",
+      "Name": "打开声音设置",
+      "Tooltip": "打开 Windows“声音”控制面板的“播放”页",
+      "Icon": "imgs/action-panel",
+      "SupportedInMultiActions": true,
+      "Controllers": ["Keypad"],
+      "States": [
+        { "Image": "imgs/key-panel", "Title": "声音设置", "TitleAlignment": "bottom" }
+      ]
+    }
+  ]
+}

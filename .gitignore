@@ -1,0 +1,3 @@
+# Build output and runtime log
+*.exe
+*.log
