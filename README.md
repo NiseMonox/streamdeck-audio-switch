@@ -1,28 +1,30 @@
-# 音频切换 · Stream Deck Audio Switch
+**English** | [简体中文](README.zh-CN.md)
 
-在 Stream Deck 上一键切换 Windows 的默认播放设备（比如耳机 ↔ 音箱），也可以一键打开“声音”控制面板。
+# Stream Deck Audio Switch
 
-<img src="docs/keys.svg" alt="耳机（使用中）、音箱、声音设置三个按键" width="360">
+Switch the default playback device in Windows (e.g. headphones ↔ speakers) with a single press on your Stream Deck, or open the Sound control panel just as easily.
 
-## 功能
+<img src="docs/keys.svg" alt="Three keys: headphones (in use), speakers, and sound settings" width="360">
 
-| 动作 | 说明 |
+## Features
+
+| Action | Description |
 |---|---|
-| 切换到耳机 / 切换到音箱 | 每个键绑定一个播放设备，按下就切过去。正在使用的设备对应的键会亮起，其他的变灰；在 Windows 里用别的方式切换，按键也会同步。 |
-| 单键来回切换 | 一个键在两个设备之间来回切，图标显示当前设备。 |
-| 打开声音设置 | 打开经典的“声音”控制面板（播放页）；已经打开的话就提到最前面。 |
+| Switch to Headphones (切换到耳机) / Switch to Speakers (切换到音箱) | Each key is tied to one playback device; press it to switch to that device. The key for the device in use lights up and the others are grayed out; if you switch devices some other way in Windows, the keys stay in sync. |
+| Single-Key Toggle (单键来回切换) | One key toggles back and forth between two devices; its icon shows the current one. |
+| Open Sound Settings (打开声音设置) | Opens the classic Sound control panel (Playback tab); if it's already open, brings it to the front. |
 
-- 切换类按键长按 0.5 秒也会打开“声音”设置。
-- 切换时同时设为“默认设备”和“默认通信设备”，和声音面板里的“设为默认值”效果一样。
-- 设备没连接时按键会显示警告；设备 ID 变了会按名称重新找到。
+- Holding down any switching key for 0.5 seconds also opens the Sound control panel.
+- Switching sets the device as both the "Default Device" and the "Default Communication Device", the same as clicking "Set Default" in the Sound control panel.
+- If a device isn't connected, its key shows a warning; if a device's ID changes, the plugin finds it again by name.
 
-## 安装
+## Installation
 
-需要 Windows 10/11 和 Stream Deck 软件 6.5 以上。
+Requires Windows 10/11 and the Stream Deck app, version 6.5 or later.
 
-**直接安装：** 在 [Releases](https://github.com/NiseMonox/streamdeck-audio-switch/releases/latest) 下载 `com.nisemonox.audioswitch.streamDeckPlugin`，双击即可装进 Stream Deck。
+**Install directly:** Download `com.nisemonox.audioswitch.streamDeckPlugin` from [Releases](https://github.com/NiseMonox/streamdeck-audio-switch/releases/latest) and double-click the file to install it in Stream Deck.
 
-**从源码编译：** 不需要额外安装运行库或第三方工具，用 Windows 自带的 .NET Framework C# 编译器编译。
+**Build from source:** No extra runtimes or third-party tools to install; it's compiled with the .NET Framework C# compiler that ships with Windows.
 
 ```powershell
 git clone https://github.com/NiseMonox/streamdeck-audio-switch.git
@@ -30,34 +32,30 @@ cd streamdeck-audio-switch
 powershell -ExecutionPolicy Bypass -File .\build.ps1 -Install
 ```
 
-`-Install` 会编译、把插件复制到 `%APPDATA%\Elgato\StreamDeck\Plugins`，然后重启 Stream Deck；`-Package` 则在 `dist\` 生成可以双击安装的 `.streamDeckPlugin`（Releases 里的文件就是这样生成的）。
+`-Install` compiles the plugin, copies it to `%APPDATA%\Elgato\StreamDeck\Plugins` and restarts Stream Deck; `-Package` instead creates a double-click-to-install `.streamDeckPlugin` in `dist\` (that's how the file on the Releases page is built).
 
-装好后，在 Stream Deck 软件右侧的“音频切换”分类里把动作拖到按键上，在下方的下拉框里选设备即可。
+Once it's installed, drag an action from the "音频切换" (Audio Switch) category on the right side of the Stream Deck app onto a key, then pick a device from the drop-down below. The plugin's UI text is in Chinese.
 
-## 命令行
+## Command line
 
-编译出来的 `AudioSwitch.exe` 也能单独用，比如给其他工具调用：
+The compiled `AudioSwitch.exe` also works on its own, e.g. for other tools to call:
 
 ```text
-AudioSwitch.exe list                     列出播放设备（* 表示当前默认）
-AudioSwitch.exe set <设备>                切换到某个设备
-AudioSwitch.exe toggle <设备A> <设备B>     在两个设备之间切换
-AudioSwitch.exe panel                    打开“声音”设置
+AudioSwitch.exe list                           List playback devices (* marks the current default)
+AudioSwitch.exe set <device>                   Switch to a device
+AudioSwitch.exe toggle <device A> <device B>   Toggle between two devices
+AudioSwitch.exe panel                          Open the Sound control panel
 ```
 
-`<设备>` 可以是设备 ID，也可以是设备名称的一部分，例如 `iFi`。
+`<device>` can be a device ID or part of a device name, e.g. `iFi`.
 
-## 实现
+## How it works
 
-- 用 Core Audio API（`IMMDeviceEnumerator`、`IMMNotificationClient`）列出设备、监听默认设备的变化。
-- 设置默认设备用的是未公开的 `IPolicyConfig` 接口。“声音”控制面板自己也用它，从 Windows 7 起一直可用。
-- 插件本体是一个 C# 程序（[`src/AudioSwitch.cs`](src/AudioSwitch.cs)，C# 5 / .NET Framework 4.x），通过 Stream Deck SDK v2 的 WebSocket 协议和 Stream Deck 通信；设置界面是 [`pi/inspector.html`](com.nisemonox.audioswitch.sdPlugin/pi/inspector.html)。
-- 运行日志写在已安装插件目录下的 `AudioSwitch.log`。
+- Uses the Core Audio API (`IMMDeviceEnumerator`, `IMMNotificationClient`) to list devices and listen for changes to the default device.
+- Setting the default device relies on the undocumented `IPolicyConfig` interface. The Sound control panel uses it too, and it has worked since Windows 7.
+- The plugin itself is a C# program ([`src/AudioSwitch.cs`](src/AudioSwitch.cs), C# 5 / .NET Framework 4.x) that talks to Stream Deck over the Stream Deck SDK v2 WebSocket protocol; the settings UI is [`pi/inspector.html`](com.nisemonox.audioswitch.sdPlugin/pi/inspector.html).
+- The runtime log is written to `AudioSwitch.log` in the installed plugin's folder.
 
-## English
-
-A Windows-only Stream Deck plugin that switches the default playback device with one key press (for example a headphones key and a speakers key, where the key of the device in use lights up), plus a key that opens the classic Sound control panel. It is built with the C# compiler that ships with Windows, so there are no runtimes or third-party dependencies to install. Download the `.streamDeckPlugin` from [Releases](https://github.com/NiseMonox/streamdeck-audio-switch/releases/latest) and double-click it (or build from source with `build.ps1 -Install`), then drag the actions from the "音频切换" category onto keys and pick a device. The UI text is in Chinese.
-
-## 许可证
+## License
 
 [MIT](LICENSE)
